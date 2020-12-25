@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.EntityBlockFormEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
@@ -25,9 +26,14 @@ public class TKEvents implements Listener {
         // Sends a message to the player that joined
         Player player = event.getPlayer();
         player.sendTitle((ChatColor.LIGHT_PURPLE + "Welcome to "), (ChatColor.RED + "HELL"), 0, 100, 20);
-        player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, SoundCategory.AMBIENT, 1.0f, 1.0f);
-        player.playSound(player.getLocation(), Sound.ENTITY_WITHER_DEATH, SoundCategory.AMBIENT, 1.0f, 1.0f);
-        //player.sendMessage((ChatColor.RED + "Welcome to HELL!\n") + (ChatColor.LIGHT_PURPLE + "Now with MORE things!\n- Ferns and tall grass are poisonous too now;"));
+        player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, SoundCategory.AMBIENT, 0.1f, 0.1f);
+        player.playSound(player.getLocation(), Sound.ENTITY_WITHER_DEATH, SoundCategory.AMBIENT, 0.1f, 0.1f);
+        player.sendMessage((ChatColor.RED + "Welcome to HELL!\n") + (
+                ChatColor.LIGHT_PURPLE + "Now with MORE things" +
+                ChatColor.LIGHT_PURPLE + "\n- Ferns and tall grass are poisonous too now;" +
+                ChatColor.LIGHT_PURPLE + "\n- Replaced salmons with tropical fish;" +
+                ChatColor.LIGHT_PURPLE + "\n- Made sounds quieter;"
+        ));
 
     }
 
@@ -63,12 +69,12 @@ public class TKEvents implements Listener {
             event.getEntity().getWorld().spawnEntity(event.getEntity().getLocation(), EntityType.PRIMED_TNT);
 
         }
+
+        // If the entity isn't a tropical fish, generate a small explosion
         if (event.getEntityType() != EntityType.TROPICAL_FISH) {
-
-            // If the entity isn't a tropical fish, generate a small explosion
             event.getEntity().getWorld().createExplosion(event.getEntity().getLocation(), 1.0f);
-
         }
+
     }
 
     @EventHandler
@@ -78,7 +84,7 @@ public class TKEvents implements Listener {
         double a = Math.random() * 49 + 1;
         if (a < 40) {
             Player player = event.getPlayer();
-            player.playSound(player.getLocation(), Sound.ENTITY_WITHER_HURT, SoundCategory.AMBIENT, 1.0f,1.0f);
+            player.playSound(player.getLocation(), Sound.ENTITY_WITHER_HURT, SoundCategory.AMBIENT, 0.1f,0.1f);
             player.sendTitle((ChatColor.RED + "unlucky"), (ChatColor.RED + "try again"), 1, 1, 1);
             event.setCancelled(true);
         }
@@ -91,7 +97,7 @@ public class TKEvents implements Listener {
         // When a player enters a bed, summon tnt to make sure that the bed gets destroyed.
         event.getPlayer().getWorld().spawnEntity(event.getPlayer().getLocation(), EntityType.PRIMED_TNT);
         Player player = event.getPlayer();
-        player.playSound(player.getLocation(), Sound.ENTITY_WITHER_HURT, SoundCategory.AMBIENT, 1.0f,1.0f);
+        player.playSound(player.getLocation(), Sound.ENTITY_WITHER_HURT, SoundCategory.AMBIENT, 0.1f,0.1f);
         player.sendTitle((ChatColor.RED + "no"), null, 1, 1, 1);
 
     }
@@ -134,7 +140,7 @@ public class TKEvents implements Listener {
             double a = Math.random() * 49 + 1;
             if (a < 40) {
                 Player player = event.getPlayer();
-                player.playSound(player.getLocation(), Sound.ENTITY_WITHER_HURT, SoundCategory.AMBIENT, 1.0f,1.0f);
+                player.playSound(player.getLocation(), Sound.ENTITY_WITHER_HURT, SoundCategory.AMBIENT, 0.1f,0.1f);
                 player.sendTitle((ChatColor.RED + "unlucky"), (ChatColor.RED + "try again"), 1, 1, 1);
                 event.setCancelled(true);
             }
@@ -145,7 +151,7 @@ public class TKEvents implements Listener {
             double a = Math.random() * 49 + 1;
             if (a < 40) {
                 Player player = event.getPlayer();
-                player.playSound(player.getLocation(), Sound.ENTITY_WITHER_HURT, SoundCategory.AMBIENT, 1.0f,1.0f);
+                player.playSound(player.getLocation(), Sound.ENTITY_WITHER_HURT, SoundCategory.AMBIENT, 0.1f,0.1f);
                 player.sendTitle((ChatColor.RED + "unlucky"), (ChatColor.RED + "try again"), 1, 1, 1);
                 event.setCancelled(true);
             }
@@ -156,7 +162,7 @@ public class TKEvents implements Listener {
             double a = Math.random() * 49 + 1;
             if (a < 40) {
                 Player player = event.getPlayer();
-                player.playSound(player.getLocation(), Sound.ENTITY_WITHER_HURT, SoundCategory.AMBIENT, 1.0f,1.0f);
+                player.playSound(player.getLocation(), Sound.ENTITY_WITHER_HURT, SoundCategory.AMBIENT, 0.1f,0.1f);
                 player.sendTitle((ChatColor.RED + "unlucky"), (ChatColor.RED + "try again"), 1, 1, 1);
                 event.setCancelled(true);
             }
@@ -165,7 +171,7 @@ public class TKEvents implements Listener {
         // If a player breaks a block, and if it's a poisonous block, it has a 80% chance of failing.
         if ((event.getBlock().getType() == Material.GRASS) || (event.getBlock().getType() == Material.TALL_GRASS)) {
             Player player = event.getPlayer();
-            player.playSound(player.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 1.0f, 1.0f);
+            player.playSound(player.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 0.1f, 0.1f);
             event.getBlock().getWorld().spawnParticle(Particle.TOTEM, event.getBlock().getLocation(), 100);
             Entity bee1 = event.getBlock().getWorld().spawnEntity(event.getBlock().getLocation(), EntityType.BEE);
             bee1.getWorld().createExplosion(bee1.getLocation(), 4.0f);
@@ -175,19 +181,26 @@ public class TKEvents implements Listener {
     @EventHandler
     public void playerMoveEvent(PlayerMoveEvent event) {
 
+        // If player is on Nether Bricks, break the block underneath
         Player player = event.getPlayer();
         if (player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.NETHER_BRICKS) {
             player.getLocation().getBlock().getRelative(BlockFace.DOWN).breakNaturally();
         }
+
+        // 0.5% chance of the player tripping
         double a = Math.random() * 100;
         if (a < 0.1) {
             player.setHealth(player.getHealth() - 2);
             player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 60, 255));
             player.sendTitle((ChatColor.RED + "-"), (ChatColor.RED + "you tripped"), 5, 10, 5);
         }
-        if (EventLists.poisonBlocks.contains(player.getLocation().getBlock().getType())) {
+
+        // If player is on a poisonous block, poison player | Configurable in Lists class
+        if (Lists.getPoisonousBlocks().contains(event.getPlayer().getLocation().getBlock().getType())) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 20, 255));
         }
+
+        // If player is on a cornflower, levitate
         if (player.getLocation().getBlock().getType() == Material.CORNFLOWER) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 100, 2));
         }
@@ -195,46 +208,60 @@ public class TKEvents implements Listener {
 
     @EventHandler
     public void blockPlaceEvent(BlockPlaceEvent event) {
+
+        // If the player places a block containing "BED", summon primed tnt
         if (event.getBlock().getType().toString().contains("BED")) {
             event.getBlock().getWorld().spawnEntity(event.getBlock().getLocation(), EntityType.PRIMED_TNT);
             Player player = event.getPlayer();
-            player.playSound(player.getLocation(), Sound.ENTITY_WITHER_HURT, SoundCategory.AMBIENT, 1.0f,1.0f);
+            player.playSound(player.getLocation(), Sound.ENTITY_WITHER_HURT, SoundCategory.AMBIENT, 0.1f,0.1f);
             player.sendTitle((ChatColor.RED + "no"), null, 1, 1, 1);
             event.getBlock().setType(Material.AIR);
         }
+
     }
 
     @EventHandler
     public void playerDeathEvent(PlayerDeathEvent event) {
+
+        // Once player dies, play sound and show title
         Player player = event.getEntity();
-        player.playSound(player.getLocation(), Sound.ENTITY_WITHER_DEATH, SoundCategory.AMBIENT, 1.0f,1.0f);
+        player.playSound(player.getLocation(), Sound.ENTITY_WITHER_DEATH, SoundCategory.AMBIENT, 0.1f,0.1f);
         player.sendTitle((ChatColor.RED + "lol"), (ChatColor.RED + "u died"), 60, 60, 60);
+
     }
 
     @EventHandler
     public void playerRespawnEvent(PlayerRespawnEvent event) {
+
+        // Once player respawns, set maxEntityCramming to -1 (infinity) so the tropical fish dont DIE
         Player player = event.getPlayer();
         player.getWorld().setGameRule(GameRule.MAX_ENTITY_CRAMMING, -1);
         for (int i=1; i<=50; i++) {
-            player.getWorld().spawnEntity(player.getLocation(), EntityType.SALMON);
+            player.getWorld().spawnEntity(player.getLocation(), EntityType.TROPICAL_FISH);
         }
     }
 
     @EventHandler
     public void playerAdvancementDoneEvent(PlayerAdvancementDoneEvent event) {
+
+        // Once player completes advancement, summon tropical fish
         Player player = event.getPlayer();
-        player.getWorld().spawnEntity(player.getLocation(), EntityType.SALMON);
+        player.getWorld().spawnEntity(player.getLocation(), EntityType.TROPICAL_FISH);
+
     }
 
     @EventHandler
     public void playetBucketEmptyEvent(PlayerBucketEmptyEvent event) {
+
+        // 80% chance of bucket place failing
         double a = Math.random() * 49 + 1;
         if (a < 40) {
             Player player = event.getPlayer();
-            player.playSound(player.getLocation(), Sound.ENTITY_WITHER_HURT, SoundCategory.AMBIENT, 1.0f,1.0f);
+            player.playSound(player.getLocation(), Sound.ENTITY_WITHER_HURT, SoundCategory.AMBIENT, 0.1f,0.1f);
             player.sendTitle((ChatColor.RED + "unlucky"), (ChatColor.RED + "try again"), 1, 1, 1);
             event.setCancelled(true);
         }
+
     }
 
 
