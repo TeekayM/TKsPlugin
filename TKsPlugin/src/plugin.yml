@@ -1,0 +1,5 @@
+name: TKsPlugin
+version: 1.0.0
+author: TinyKitty
+main: com.tinykitty.tksplugin.TKsPlugin
+api-version: 1.14
