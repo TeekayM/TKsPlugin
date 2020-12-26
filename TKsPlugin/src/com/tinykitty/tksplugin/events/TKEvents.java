@@ -29,10 +29,7 @@ public class TKEvents implements Listener {
         player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, SoundCategory.AMBIENT, 0.1f, 0.1f);
         player.playSound(player.getLocation(), Sound.ENTITY_WITHER_DEATH, SoundCategory.AMBIENT, 0.1f, 0.1f);
         player.sendMessage((ChatColor.RED + "Welcome to HELL!\n") + (
-                ChatColor.LIGHT_PURPLE + "Now with MORE things" +
-                ChatColor.LIGHT_PURPLE + "\n- Ferns and tall grass are poisonous too now;" +
-                ChatColor.LIGHT_PURPLE + "\n- Replaced salmons with tropical fish;" +
-                ChatColor.LIGHT_PURPLE + "\n- Made sounds quieter;"
+                ChatColor.LIGHT_PURPLE + "Now with MORE brain damage!"
         ));
 
     }
@@ -133,7 +130,7 @@ public class TKEvents implements Listener {
     }
 
     @EventHandler
-    public void blockBreakEvent(BlockBreakEvent event) throws InterruptedException {
+    public void blockBreakEvent(BlockBreakEvent event) {
 
         // If a player breaks a block, and it contains "LOG", it has a 80% chance of failing.
         if (event.getBlock().getType().toString().contains("LOG")) {
@@ -168,8 +165,17 @@ public class TKEvents implements Listener {
             }
         }
 
-        // If a player breaks a block, and if it's a poisonous block, it has a 80% chance of failing.
-        if ((event.getBlock().getType() == Material.GRASS) || (event.getBlock().getType() == Material.TALL_GRASS)) {
+        // If a player breaks a block, and if it's a poisonous block, EXPLODE
+        if (Lists.getPoisonousBlocks().contains(event.getBlock().getType())) {
+            Player player = event.getPlayer();
+            player.playSound(player.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 0.1f, 0.1f);
+            event.getBlock().getWorld().spawnParticle(Particle.TOTEM, event.getBlock().getLocation(), 100);
+            Entity bee1 = event.getBlock().getWorld().spawnEntity(event.getBlock().getLocation(), EntityType.BEE);
+            bee1.getWorld().createExplosion(bee1.getLocation(), 4.0f);
+        }
+
+        // If a player breaks a block, and if the block over it is poisonous, EXPLODE
+        if (Lists.getPoisonousBlocks().contains(event.getBlock().getRelative(BlockFace.UP).getType())) {
             Player player = event.getPlayer();
             player.playSound(player.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 0.1f, 0.1f);
             event.getBlock().getWorld().spawnParticle(Particle.TOTEM, event.getBlock().getLocation(), 100);
@@ -203,6 +209,21 @@ public class TKEvents implements Listener {
         // If player is on a cornflower, levitate
         if (player.getLocation().getBlock().getType() == Material.CORNFLOWER) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 100, 2));
+        }
+
+        // If player is on a dandelion, wither
+        if (player.getLocation().getBlock().getType() == Material.DANDELION) {
+            player.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 20, 2));
+        }
+
+        // If player is on a poppy, speed
+        if (player.getLocation().getBlock().getType() == Material.POPPY) {
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20, 5));
+        }
+
+        // If player is on a poppy, speed
+        if (player.getLocation().getBlock().getType() == Material.DEAD_BUSH) {
+            player.addPotionEffect(new PotionEffect(PotionEffectType.HARM, 10, 1));
         }
     }
 
